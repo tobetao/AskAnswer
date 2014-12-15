@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/stylesheets/A-2.jpg">
+
+
+    {% block title %}
+    <title>Ask & Answer</title>
+    {% endblock title%}
+
+    {% block css_file%}
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/css/tao.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    {% endblock css_file%}
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <a name="Top"></a>
+  </head>
+
+  <body class="question-page new-topbar">
+      <noscript><div id="noscript-padding"></div></noscript>
+    <div id="notify-container"></div>
+    <div id="overlay-header"></div>
+    <div id="custom-header"></div>
+  
+    {%block nav%}
+   <div class="topbar">
+    <div class="topbar-wrapper">
+
+      <div class="topbar-links">
+      		<div class="links-container">
+            	<span class="topbar-menu-links">
+                	<a href="/">Home</a>
+                	<a href="/rss">RSS</a>
+
+              {% if p.user %}
+                	<a class="login-link">Welcome, {{ p.user }}</a>
+                	<a href={{p.users.create_logout_url('/')}} class="login-link">Log out</a>
+              {% else %}
+                <a href={{p.users.create_login_url(p.request.uri) }} class="login-link">Log in</a>
+              {% endif %}
+              	
+             </div>
+             <div class="search-container">
+                <form id="search" action="/search" method="get" autocomplete="off">
+                    <input name="q" type="text" placeholder="search" value="" tabindex="1" autocomplete="off" maxlength="240" />
+                </form>
+            </div>
+            </span>
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+	</div>
+	            
+	
+    {%endblock nav%}
+
+    {% block content %}
+    <div class="container">
+       {%block header%}
+		<div id="header">
+			<br class="cbt">
+			<div id="hlogo">
+			 
+        		<h1 class="blog-title"><img src="/stylesheets/A-2.jpg" width=42px, height=42px />&nbsp;&nbsp;Ask & Answer</h1>
+        		<p class="lead blog-description">Open source tools' final project of Guangbo Tao </p>
+        	</div>
+
+         
+       {%endblock header%}
+      {%block create%}
+      {%endblock%}
+      	</div>
+      </div>
+      
+      <div id="content">
+
+        {%block blog_main%}
+        <div id="mainbar" >
+        	<div id="questions">
+          {%block posts%}
+
+          {%endblock posts%}
+
+          {%block pager%}
+
+          {%endblock pager%}
+			</div>
+        </div><!-- /.blog-main -->
+        {%endblock blog_main%}
+
+        {%block sidebar%}
+        <div id="sidebar" style="width:22%">
+           <div class="module" id="questions-count">
+            <h4><a href="/">About</a></h4> <p aligh=left>
+	            <ul>
+	            	<li>Love this site? </li>
+	            	<li>Top questions and answers </li>
+	            	<li>Important announcements </li>
+	            	<li>Unanswered questions </li>
+	            </ul>
+          </div>
+          <div class="module js-gps-related-tags" id="related-tags">
+          {%block tags%}
+            
+          {%endblock tags%}
+          </div>
+
+        </div><!-- /.blog-sidebar -->
+      {%endblock sidebar%}
+
+
+
+    </div><!-- /.container -->
+    {% endblock content%}
+
+    {%block footer%}
+    <div id="footer" class="categories">
+       <div class="footerwrap">
+       <div id="copyright">
+        <p>&copy; <a href="#"> Grace Tao</a>, 2014</p>
+        </div>
+      </div>
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+    {%endblock footer%}
+
+
+    {%block script_load%}
+    <!-- Bootstrap core JavaScript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/stylesheets/js/bootstrap.min.js"></script>
+
+    
+    {%block script%}
+
+    {%endblock script%}
+
+    {%endblock script_load%}
+
+  </body>
+
+</html>

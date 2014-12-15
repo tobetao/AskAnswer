@@ -1,0 +1,26 @@
+{% extends "bootstrap_base.html" %}
+    {% block title %}
+    <title>Create a new answer</title>
+    {% endblock title%}
+    {%block posts%}
+        {% if p.user %}
+        <div class="blog-post"> 
+            <h2 class="blog-post-title"><br><br>Create a new answer</h2>
+            {% if not p.key %}
+              <form action="/{{p.parent}}/answerpost" enctype="multipart/form-data" role="form" method="post" style="padding: 15px;min-width: 250px;" >
+            {% else %}
+              <form action="/{{p.parent}}/{{p.key().id()}}/answerpost" enctype="multipart/form-data" role="form" method="post" style="padding: 15px;min-width: 250px;" >
+            {% endif %}
+                <div class="text-left" style="padding: 15px;max-width: 600px;"> 
+                    What is your answer?
+                    <textarea name="body" style="width:600px" required rows="5" placeholder="Please enter your answer here">{{p.body_str}}</textarea><br>
+                    
+                    Upload Image:
+                    <br><input type="file" name="img" class="form-control"/><br>
+                    
+                    <button class="btn btn-success" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+    {%endblock posts%}

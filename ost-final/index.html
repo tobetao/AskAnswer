@@ -1,0 +1,106 @@
+{% extends "bootstrap_base.html" %}
+
+    
+    {% block title %}
+    <title>Home page of OST Question</title>
+    {% endblock title%}
+    {%block posts%}
+        {% if p.posts %}
+            {% for post in p.posts%}
+            <div class="question-summary">
+                <div class="statscontainer">
+                	<div class="statsarrow"></div>
+                	<div class="stats">
+                    {% if p.user %}
+                    <a href="/{{post.key().id()}}/vote?action=upm" class="vote-up-off">
+                    Up</a>
+                    {% endif %}
+                    <div class="vote">
+		                <div class="votes">
+		                    <span class="vote-count-post "><strong> {{ post.questionvote }}</strong></span>
+		                    <div class="viewcount">votes</div>
+		                </div>
+		            </div>          
+                    {% if p.user %}
+                    <a href="/{{post.key().id()}}/vote?action=downm" class="vote-down-off">
+                    Down</a>
+                    {% endif %}
+                	</div>
+                </div>
+               <div class="summary"> 
+                	
+                    <p aligh=left>            
+         
+                        {{ post.render_text | safe }}                        
+          
+                        <br>
+                        {% if post.avatar %}
+                        
+                        <img src="/img?img_id={{post.key()}}" style="max-width:500px"></img>
+                        
+                        {%endif%}
+                        <div class="tags t-publications t-editors t-journal-workflow">
+                        {% for tag in post.tags %}
+                            <a href="/index?tag={{tag}}" class="post-tag">{{tag}}</a>
+                        {% endfor %}
+                        <br>
+                        <a href="/{{post.key().id()}}" class="post-tag">More</a>
+                        {% if post.is_editable %}
+                        <a href="/{{post.key().id()}}/edit" class="post-tag">Edit</a>
+                    	
+                        {% endif %}
+                        </div>
+                    </p>
+                    <div class="started fr">
+            			<div class="user-info ">
+		                    <div class="user-action-time">
+		                        Created at {{post.create_time.strftime('%I:%M %p, %b %d, %Y')}} by <a href="/index?user={{post.user.nickname()}}"> {{post.user.nickname()}} </a>
+		                        {% if post.has_modified %}
+		                        Last modified at {{post.last_modified.strftime('%I:%M %p, %b %d, %Y')}}
+		                        {% endif %}
+		                    </div>      
+		                </div>
+		            </div>              
+                </div>  
+            </div>
+            {%endfor%}
+        {% endif %}
+    {%endblock posts%}
+    {%block create%}
+        {% if p.user %}
+     	<div id="hmenus">               
+                <div class="nav askquestion">
+                    <ul>
+                        <li>
+                            <a id="nav-askquestion"  href="/createquestion">Ask Question</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    {%endblock%}
+	{%block tags%}
+    <h4>Related Tags</h4>
+    <ol class="list-unstyled">
+        {%if p.tags%}
+            {%for tag in p.tags %}
+                <a href="/index?tag={{tag}}" class="post-tag">{{ tag }}</a>
+            {%endfor%}
+        {%else %}
+            <li>There are no tags yet.</li>
+        {%endif%}
+    </ol>
+    {%endblock tags%}
+        {%block pager%}   
+        {% if p.has_previous %}
+           <a href="{{ p.previous_url }}"><button class="btn btn-success">previous</button></a>
+        {%else%}
+           <button class="btn btn-success" disabled>previous</button>
+        {% endif %}
+
+        {% if p.has_next %}
+            <a href="{{ p.next_url }}"><button class="btn btn-success">next</button></a>
+        {%else%}
+            <button class="btn btn-success" disabled>next</button>
+        {% endif %}
+    {%endblock pager%}
