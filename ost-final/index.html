@@ -30,7 +30,7 @@
                <div class="summary"> 
                 	
                     <p aligh=left>            
-         
+                    <a href="/{{post.key().id()}}" style="color:black"><b>{{post.title}}</b></a><br> 
                         {{ post.render_text | safe }}                        
           
                         <br>
@@ -44,9 +44,10 @@
                             <a href="/index?tag={{tag}}" class="post-tag">{{tag}}</a>
                         {% endfor %}
                         <br>
-                        <a href="/{{post.key().id()}}" class="post-tag">More</a>
+                        <a href="/{{post.key().id()}}" class="status answered">More</a>
+                        <a href="/{{post.key().id()}}/rss" class="status answered" >RSS</a>
                         {% if post.is_editable %}
-                        <a href="/{{post.key().id()}}/edit" class="post-tag">Edit</a>
+                        <a href="/{{post.key().id()}}/edit" class="status answered">Edit</a>
                     	
                         {% endif %}
                         </div>
