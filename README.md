@@ -10,66 +10,43 @@ Highlight features includes:
 * **default page with login** - Users could see all questions and answers without login.
 * **multiple users** - The system handles multiple users and each user is able to create/edit one or more question/answer owned by the user once login .
 * **tags** - Users could define tags. Each post might has a number of tags and click a tag can view all posts marked by that tag. 
-* **Designed feature** - Each page shows up to 10 post with next page or previous page button available. JavaScript and page features could be referenced to Bootstrap ([ref](http://bootstrapzero.com/)) and StackOverflow ([ref](http://bootstrapzero.com/)
+* **Designed feature** - Each page shows up to 10 post with next page or previous page button available. JavaScript and page features could be referenced to Bootstrap ([ref](http://bootstrapzero.com/)) and StackOverflow ([ref](http://bootstrapzero.com/))
 * **uploads** - user can upload images locally both in add question page or add answer page. Answer could also be added in view question page without upload iamge feature.
 * **RSS** - each question has RSS link, that dumps a entire blog in XML format.
 * **votes** - A logged in user could vote up or down on any question/answer. 
 * **timestamp** - Questions and answers are stored along with a timestamp created or modified. 
 * **contents limits** - each question will display content capped at 500 characters. Upload image could not exceed limit size. 
-* **Branch** - program is develped using GIT and branch with RSS function turned down is open source in GitHub https://github.com/liangxiang/OST_Project.
+* **Branch** - program is develped using GIT and branch with RSS function turned down is open source in GitHub https://github.com/tobetao/AskAnswer/branches.
 
 Additional features with search and sort are under development.
 
 Design
 ---
-Classes
+Files Description
 	
-* Mainpage: `Show the contents of main page`
+* main.py: `python file that contains all functional classes to implement Ask&Answer features`
 
-* ViewQuestion: `Show the contents of question page`
+* addquestion.html: `Define the show page when user click to add a question`
 
-* Question: `The database taht stores all the question.`
-			`It also provides render functions that can render the htmls.`
-			`The render function also replace the white spaces to <br>`
-			`handles the links and image links. `
+* ansewr_template.html: `Define the framework of answer.`
 
-* QuestionEdit: `This handles the edit page letting user to edit an exiting question.`
+* app.yaml: `Necessary file with Google App Engine.`
 
-* NewQuestion: `add new question`
+* bootstrap_base.html: `Outer frame or the website`
 
-* QeustionEntry: `Handles the post action that an user submits a edited post.`
+* creaetanswer_image.html: `the page when user click to add answer.`
 
-* Answer: `The database taht stores all the answers.`
-			`It also provides render functions that can render the htmls.`
-			`The render function also replace the white spaces to <br>`
-			`handles the links and image links. `
+* questionpage.html: `the page when user in the view question page`
 
-* QuestionVote: `database related to vote of question`
-
-* AnswerVote: `database related to vote of answer`
-
-* AnswerEdit: `This handles the edit page letting user to edit an exiting answer.`
-
-* NewAnswer: `add new answer`
-
-* AnswerEntry: `Handles the post action that an user submits a edited answer.`
-
-* VoteQuestion: `support the function to vote question`
-
-* VoteAnswer: `support the function to vote answer`
-
-* EST: `support the time recording`
-
-* Image: `show image`
-
-* AnswerImage: `iamge added in answer post`
-
-* RSS: `The main page has RSS function`
-
-* questionRSS: `Each question has RSS function`
+* sideRss: `RSS for each question`
 
 
-Further posibly improvement:
+Undergoing development:
 ---
-* Delete function is missing, you cannot delete a post or a blog.
-* Uploaded images should be managed. You canot delete any uploaded things.
+* Support a superuser that can remove question or answer.
+* Keep track of views and give viewers access to these stats.
+* Integration with a web service to translate pages to other languages, post to facebook/twitter/G+, display ads, etc.
+* Support emailing updates, where any answer posted will get sent to the person asking the question (see ([Document](https://cloud.google.com/appengine/docs/python/mail/receivingmail))
+* Allow viewers to search for questions or answers by text in the contents.
+* Allow users the ability to follow a question, and create a view page that shows all of the followed questions.
+* Allow "smarter" sorting of questions, that uses a combination of activity (number of answers or votes) and time to better rank the questions.
