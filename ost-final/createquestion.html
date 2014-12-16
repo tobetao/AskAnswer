@@ -13,7 +13,7 @@
               <form action="/{{p.key().id()}}/post" enctype="multipart/form-data" method="post" style="width: 600px;" >
             {% endif %}
                 <div style="width: 600px;"> 
-                    
+                    <br><input type=text name="title" class="form-control" value="{{p.title}}" required autofocus placeholder="Title" style="width: 600px;"></input>
                     <br><textarea name="body" required autofocus rows="20" style="width: 600px;" placeholder="Please enter your question here" >{{p.body_str}}</textarea><br>
                     
                     Tags: (separated by space)
