@@ -45,7 +45,7 @@
       		<div class="links-container">
             	<span class="topbar-menu-links">
                 	<a href="/">Home</a>
-                	<a href="/rss">RSS</a>
+                	<!-- <a href="/rss">RSS</a> -->
 
               {% if p.user %}
                 	<a class="login-link">Welcome, {{ p.user }}</a>
@@ -76,7 +76,7 @@
 			<div id="hlogo">
 			 
         		<h1 class="blog-title"><img src="/stylesheets/A-2.jpg" width=42px, height=42px />&nbsp;&nbsp;Ask & Answer</h1>
-        		<p class="lead blog-description">Open source tools' final project of Guangbo Tao </p>
+        		<!-- <p class="lead blog-description">Open source tools' final project of Guangbo Tao </p> -->
         	</div>
 
          
@@ -105,12 +105,12 @@
         {%block sidebar%}
         <div id="sidebar" style="width:22%">
            <div class="module" id="questions-count">
-            <h4><a href="/">About</a></h4> <p aligh=left>
+            <h4><a href="/">Sort</a></h4> <p aligh=left>
 	            <ul>
-	            	<li>Love this site? </li>
-	            	<li>Top questions and answers </li>
-	            	<li>Important announcements </li>
-	            	<li>Unanswered questions </li>
+	            	<a href="/" class="youarehere" >newest </a>
+	            	<a href="/" class="youarehere" >hot 
+	            	<a href="/" class="youarehere" >votes 
+	            	<a href="/" class="youarehere" >answered 
 	            </ul>
           </div>
           <div class="module js-gps-related-tags" id="related-tags">
