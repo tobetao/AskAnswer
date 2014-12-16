@@ -1,22 +1,24 @@
-This is the final project of OST 2014 implemented in Python
+This is the web application like Quora and StackOverflow for users to Ask question and get Answer
 ---
 
-####[blog System URL](http://lx350-final.appspot.com/)
-This blog system is built by Jinjia, Google App Engine and Bootstrap, and is deployed on Google App Engine. 
+####[Ask&Answer System URL](http://tobetaoblog.appspot.com/)
+This web application is built by with Google App Engine Cloud Platform ([ref](https://cloud.google.com/appengine/docs)) and deployed on Google App Engine. 
+Jinjia is the template used ([ref](https://cloud.google.com/appengine/docs/python/gettingstartedpython27/templates)).
 
-All required features are implemented. Plus, I implement "smarter" sorting of questions, that users could use to sort by "create time", "modified time", "votes" and "answers".
+Highlight features includes:
 
-* **multiple users** - The system handles multiple users and each user is able to create one or more question/answer. A user can select and edit the question/answer posted by the user.
+* **default page with login** - Users could see all questions and answers without login.
+* **multiple users** - The system handles multiple users and each user is able to create/edit one or more question/answer owned by the user once login .
 * **tags** - Users could define tags. Each post might has a number of tags and click a tag can view all posts marked by that tag. 
-* **pagenation** - every page has 'next' and 'previous' links to other pages, and each page has no more than 10 posts. 
-* **uploads** - user can upload images locally and image with an URL could be shown inline.
+* **Designed feature** - Each page shows up to 10 post with next page or previous page button available. JavaScript and page features could be referenced to Bootstrap ([ref](http://bootstrapzero.com/)) and StackOverflow ([ref](http://bootstrapzero.com/)
+* **uploads** - user can upload images locally both in add question page or add answer page. Answer could also be added in view question page without upload iamge feature.
 * **RSS** - each question has RSS link, that dumps a entire blog in XML format.
-* **votes** - A logged in user could vote up or down. User without login could just view question/answer but not vote. 
-* **timestamp** - Questions and answers are stored along with a timestamp hen created or modified. 
-* **default view** - each question will display content capped at 500 characters. 
-* **RSS** - each question will display a RSS link.
+* **votes** - A logged in user could vote up or down on any question/answer. 
+* **timestamp** - Questions and answers are stored along with a timestamp created or modified. 
+* **contents limits** - each question will display content capped at 500 characters. Upload image could not exceed limit size. 
 * **Branch** - program is develped using GIT and branch with RSS function turned down is open source in GitHub https://github.com/liangxiang/OST_Project.
 
+Additional features with search and sort are under development.
 
 Design
 ---
