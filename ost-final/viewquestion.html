@@ -26,11 +26,12 @@
                 </div>
                 </div>
                 <div class="summary"> 
-                    <p><b>
+                    <p>
+                        <b>{{p.question.title}}</b><br>
                         {% autoescape true %} 
                         {{ p.question.render_text | safe }}                        
                         {% endautoescape %}
-                    </b>
+                    
                         {% if p.question.avatar %}
                         <br>
                         <img src="/img?img_id={{ p.question.key() }}" style="max-width:600px"></img>
