@@ -1,16 +1,18 @@
-import webapp2
-import jinja2
 import os
 import urllib
-import re
 import cgi
 import time
 import datetime
+import re
+import string
+import webapp2
+import jinja2
 
+from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.api import memcache
 from google.appengine.api import images
-from google.appengine.api import users
+from google.appengine.api import mail
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
@@ -22,9 +24,6 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 # KEY='posts'
 
-def render_str(template, **params):
-	t = JINJA_ENVIRONMENT.get_template(template)
-	return t.render(params)
 
 class Question(db.Model):
 	user = db.UserProperty()
@@ -39,6 +38,13 @@ class Question(db.Model):
 	render_text = db.TextProperty()
 	is_editable = db.BooleanProperty()
 	answernumber = db.IntegerProperty()
+	
+	def refresh(self, question_id):
+		votes = db.GqlQuery('select * from QuestionVote where question_id = :1', question_id)
+		questionvote = 0
+		for vote in votes:
+			questionvote = questionvote+vote.vote
+		self.questionvote=questionvote
 
 	def render(self, render_full_text=False):
 		if len(self.body) > 500 and not render_full_text:
@@ -52,7 +58,7 @@ class Question(db.Model):
 		img = re.compile(img_pattern)
 
 
-		local_img = re.compile(r'(localhost:\d+/pic/[^/ ]+)|({0}/pic/[^/ ]+)'.format(HOST_PATH))
+		local_img = re.compile(r'(localhost:\d+/pic/[^/ ]+)|({0}/pic/[^/ ]+)'.format('http://tobetaoblog\.appspot\.com'))
 		links = re.findall(http, self.render_text)
 
 		for link in links:
@@ -71,12 +77,7 @@ class Question(db.Model):
 
 		self.answernumber = db.GqlQuery('select * from Answer where question_id = :1', str(self.key().id())).count()
 
-	def refresh(self, question_id):
-		votes = db.GqlQuery('select * from QuestionVote where question_id = :1', question_id)
-		questionvote = 0
-		for vote in votes:
-			questionvote = questionvote+vote.vote
-		self.questionvote=questionvote
+
 
 class QuestionPage(webapp2.RequestHandler):
 	def get(self, question_id):
@@ -207,7 +208,7 @@ class Answer(db.Model):
 		img = re.compile(img_pattern)
 
 
-		local_img = re.compile(r'(localhost:\d+/pic/[^/ ]+)|({0}/pic/[^/ ]+)'.format(HOST_PATH))
+		local_img = re.compile(r'(localhost:\d+/pic/[^/ ]+)|({0}/pic/[^/ ]+)'.format('http://tobetaoblog\.appspot\.com'))
 		links = re.findall(http, self.render_text)
 
 		for link in links:
@@ -287,7 +288,7 @@ class editAnswer(webapp2.RequestHandler):
 		p.users = users
 		return render_str('createanswer_image.html', p=p)
 
-'''  *********  Handler of image uplaod  ********* '''
+'''  *********  Handler of image upload  ********* '''
 class Image(webapp2.RequestHandler):
     def get(self):
         greeting = Question.get(self.request.get('img_id'))
@@ -338,8 +339,6 @@ class AnswerSave(webapp2.RequestHandler):
 		#        self.redirect('/{0}'.format(key.id()))
 		time.sleep(0.1)
 		self.redirect('/'+question_id)
-
-
 
 class RelativeTime(datetime.tzinfo):
     def utcoffset(self, dt):
@@ -441,6 +440,11 @@ def is_owner(user):
 		return False;
 	else:
 		return True;
+	
+
+def render_str(template, **params):
+	t = JINJA_ENVIRONMENT.get_template(template)
+	return t.render(params)
 
 app = webapp2.WSGIApplication([
 	('/(\\d+)', QuestionPage),
