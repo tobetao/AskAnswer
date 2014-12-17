@@ -459,6 +459,6 @@ app = webapp2.WSGIApplication([
 	('/img', Image),
 	('/ansimg', AnswerImage),
 	#('/rss', RSS),
-	('/([0-9]+)/rss',questionRSS),
+	#('/([0-9]+)/rss',questionRSS),
 
 ], debug=True)
