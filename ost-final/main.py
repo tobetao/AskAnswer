@@ -287,6 +287,33 @@ class editAnswer(webapp2.RequestHandler):
 		p.user = users.get_current_user()
 		p.users = users
 		return render_str('createanswer_image.html', p=p)
+	
+'''  *********  database of answer  ********* '''
+class AnswerSave(webapp2.RequestHandler):
+	def post(self, question_id, answer_id=None):
+		if not answer_id:
+			post = Answer()
+			post.user = users.get_current_user()
+		else:
+			# TODO Check if the blog post is oiwned by the current user
+			post = Answer.get_by_id(int(answer_id))
+			post.has_modified = True
+
+		post.body = self.request.get('body')
+		post.question_id=question_id
+		avatar = self.request.get('img')
+		if avatar:
+			post.avatar = db.Blob(avatar)
+		post.answervote=0
+		date = datetime.datetime.now(RelativeTime())
+		post.last_modified = date
+
+		key = post.put()
+
+		# memcache.delete(KEY)
+		#        self.redirect('/{0}'.format(key.id()))
+		time.sleep(0.1)
+		self.redirect('/'+question_id)	
 
 '''  *********  Handler of image upload  ********* '''
 class Image(webapp2.RequestHandler):
@@ -313,32 +340,7 @@ class NewAnswer_image(editAnswer):
 	def get(self, question_id):
 		self.response.write(self.render(question_id=question_id))
 
-'''  *********  database of answer  ********* '''
-class AnswerSave(webapp2.RequestHandler):
-	def post(self, question_id, answer_id=None):
-		if not answer_id:
-			post = Answer()
-			post.user = users.get_current_user()
-		else:
-			# TODO Check if the blog post is oiwned by the current user
-			post = Answer.get_by_id(int(answer_id))
-			post.has_modified = True
 
-		post.body = self.request.get('body')
-		post.question_id=question_id
-		avatar = self.request.get('img')
-		if avatar:
-			post.avatar = db.Blob(avatar)
-		post.answervote=0
-		date = datetime.datetime.now(RelativeTime())
-		post.last_modified = date
-
-		key = post.put()
-
-		# memcache.delete(KEY)
-		#        self.redirect('/{0}'.format(key.id()))
-		time.sleep(0.1)
-		self.redirect('/'+question_id)
 
 class RelativeTime(datetime.tzinfo):
     def utcoffset(self, dt):
@@ -348,14 +350,6 @@ class RelativeTime(datetime.tzinfo):
         return datetime.timedelta(0)
 
 '''  *********  Handler of RSS reference  ******** '''
-class RSS(webapp2.RequestHandler):
-	def get(self):
-		self.posts = Question.all().order('-create_time')
-		self.user = users.get_current_user()
-		self.time = datetime.datetime.now(RelativeTime())
-		self.users = users
-		self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
-		self.response.write(render_str('rss.html', p=self))
 
 class questionRSS(webapp2.RequestHandler):
 	def get(self, question_id):

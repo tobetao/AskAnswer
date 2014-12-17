@@ -5,7 +5,7 @@ This is the web application like Quora and StackOverflow for users to Ask questi
 This web application is built by with Google App Engine Cloud Platform ([ref](https://cloud.google.com/appengine/docs)) and deployed on Google App Engine. 
 Jinjia is the template used ([ref](https://cloud.google.com/appengine/docs/python/gettingstartedpython27/templates)).
 
-Highlight features includes:
+The program is designed to include following highlight features:
 
 * **default page with login** - Users could see all questions and answers without login.
 * **multiple users** - The system handles multiple users and each user is able to create/edit one or more question/answer owned by the user once login .
@@ -17,6 +17,7 @@ Highlight features includes:
 * **timestamp** - Questions and answers are stored along with a timestamp created or modified. 
 * **contents limits** - each question will display content capped at 500 characters. Upload image could not exceed limit size. 
 * **Branch** - program is develped using GIT and branch with RSS function turned down is open source in GitHub https://github.com/tobetao/AskAnswer/branches.
+* **User friendly page style** - The whole page is desinged to be user friendly which includes soft color, natural button and comfortable webframe. 
 
 Additional features with search and sort are under development.
 
@@ -24,6 +25,12 @@ Design
 ---
 Files Description
 	
+* AccessDB.py: `undergoing features to store NLP database`
+
+* helpers.py: `draft`
+
+* settings.py: `Jinjia draft`
+
 * main.py: `python file that contains all functional classes to implement Ask&Answer features`
 
 * addquestion.html: `Define the show page when user click to add a question`
@@ -40,6 +47,47 @@ Files Description
 
 * sideRss: `RSS for each question`
 
+Code Description
+
+* class Question: `main handler for ask question`
+
+* class QuestionPage: `function to support view question`
+
+* class QuestionSave: `Question database`
+
+* class editQuestion: `Support edit function to question`
+
+* class QuestionVote: `database of question votes`
+
+* class VoteQuestion: `support vote function to question`
+
+* class Answer: `main handler for answer`
+
+* class AnswerVote: `database of answer votes`
+
+* class VoteAnswer: `support vote function to answer`
+
+* class editAnswer: `Support edit function to answer`
+
+* class AnswerSave: `answer database`
+
+* class Image: `handler of image`
+
+* class AnswerImage: `handler of image in answer page`
+
+* class NewAnwer_iamge: `handler of image in add answer page`
+
+* class RelativeTime: `show current time`
+
+* class questionRSS: `RSS for each question`
+
+Compile instruction:
+---
+* This web application is build with Google App Engine, the installation instruction is as following
+	- Install Google App Engine ([ref](https://cloud.google.com/appengine/downloads))
+	- Download my whole project from Github ([ref](https://github.com/tobetao/AskAnswer))
+	- Run and Deploy using Google App Engine Launcher
+	- Free Google App Engine account could be registered here ([ref](https://appengine.google.com/))
 
 Undergoing development:
 ---
