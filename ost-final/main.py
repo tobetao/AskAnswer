@@ -22,8 +22,6 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 # KEY='posts'
 
-HOST_PATH='http://tobetaoquestion\.appspot\.com'
-
 def render_str(template, **params):
 	t = JINJA_ENVIRONMENT.get_template(template)
 	return t.render(params)
@@ -123,14 +121,14 @@ class QuestionSave(webapp2.RequestHandler):
 			post.avatar = db.Blob(avatar)
 		post.questionvote = 0
 
-		date = datetime.datetime.now(EST())
+		date = datetime.datetime.now(RelativeTime())
 		post.last_modified = date
 		key = post.put()
 
 		time.sleep(0.1)
 		self.redirect('/')
 
-class QuestionEdit(webapp2.RequestHandler):    
+class editQuestion(webapp2.RequestHandler):    
 	def get(self, question_id):        
 		user = users.get_current_user()
 		question = Question.get_by_id(int(question_id))
@@ -151,7 +149,7 @@ class QuestionVote(db.Model):
 	question_id = db.StringProperty()
 	vote = db.IntegerProperty()
 	
-'''  *********  suppor function to vote question  ********* '''
+'''  *********  support function to vote question  ********* '''
 class VoteQuestion(webapp2.RequestHandler):
 	def get(self, question_id):
 		user = users.get_current_user()
@@ -183,7 +181,7 @@ class VoteQuestion(webapp2.RequestHandler):
 		else:
 			self.redirect('/')
 
-class NewQuestion(QuestionEdit):
+class NewQuestion(editQuestion):
 	def get(self):
 		self.response.write(self.render())
 
@@ -271,7 +269,8 @@ class VoteAnswer(webapp2.RequestHandler):
 		time.sleep(0.2)
 		self.redirect('/'+question_id)
 
-class AnswerEdit(webapp2.RequestHandler):    
+'''  *********  Handler of image uplaod page for answer edit  ********* '''
+class editAnswer(webapp2.RequestHandler):    
 	def get(self, question_id, answer_id):
 		answer = Answer.get_by_id(int(answer_id))
 		self.response.write(self.render(question_id, answer))
@@ -309,7 +308,7 @@ class AnswerImage(webapp2.RequestHandler):
             self.response.out.write('No image')
 
 '''  *********  support the upload of image in Add answer function in a new page  ********* '''
-class NewAnswer_image(AnswerEdit):
+class NewAnswer_image(editAnswer):
 	def get(self, question_id):
 		self.response.write(self.render(question_id=question_id))
 
@@ -330,7 +329,7 @@ class AnswerSave(webapp2.RequestHandler):
 		if avatar:
 			post.avatar = db.Blob(avatar)
 		post.answervote=0
-		date = datetime.datetime.now(EST())
+		date = datetime.datetime.now(RelativeTime())
 		post.last_modified = date
 
 		key = post.put()
@@ -342,7 +341,7 @@ class AnswerSave(webapp2.RequestHandler):
 
 
 
-class EST(datetime.tzinfo):
+class RelativeTime(datetime.tzinfo):
     def utcoffset(self, dt):
       return datetime.timedelta(hours=0)
 
@@ -354,7 +353,7 @@ class RSS(webapp2.RequestHandler):
 	def get(self):
 		self.posts = Question.all().order('-create_time')
 		self.user = users.get_current_user()
-		self.time = datetime.datetime.now(EST())
+		self.time = datetime.datetime.now(RelativeTime())
 		self.users = users
 		self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
 		self.response.write(render_str('rss.html', p=self))
@@ -365,7 +364,7 @@ class questionRSS(webapp2.RequestHandler):
 		self.posts = Answer.all().order('-create_time')
 		self.posts = self.posts.filter('question_id', question_id)
 		self.user = users.get_current_user()
-		self.time = datetime.datetime.now(EST())
+		self.time = datetime.datetime.now(RelativeTime())
 		self.users = users
 		self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
 		self.response.write(render_str('sideRss.html', p=self))
@@ -393,6 +392,7 @@ class Mainpage(webapp2.RequestHandler):
 			query['tag']=search_tag
 			self.posts.filter('tags', search_tag)
 
+		# display user 
 		username = self.request.get('user')
 		if username:
 			if username.find('@')==-1:
@@ -426,7 +426,7 @@ class Mainpage(webapp2.RequestHandler):
 			self.next_url=url+'page='+str(page+1)
 
 
-
+		# fetch 10
 		self.posts=self.posts[page*10:(page*10+10)]
 		for post in self.posts:		
 			post.render()
@@ -435,7 +435,7 @@ class Mainpage(webapp2.RequestHandler):
 
 		self.response.write(render_str('index.html', p = self))
 		
-
+'''  *********  current user  ******** '''	
 def is_owner(user):
 	if users.User(user) != users.get_current_user():
 		return False;
@@ -443,22 +443,21 @@ def is_owner(user):
 		return True;
 
 app = webapp2.WSGIApplication([
+	('/(\\d+)', QuestionPage),
+	('/(\\d+)/post', QuestionSave),
+	('/post', QuestionSave),
+	('/(\\d+)/vote', VoteQuestion),
+	('/(\\d+)/edit', editQuestion),
+	('/img', Image),
+	('/(\\d+)/(\\d+)/answerpost', AnswerSave),
+	('/(\\d+)/answerpost', AnswerSave),
+	('/(\\d+)/createanswer_image', NewAnswer_image),
+	('/(\\d+)/(\\d+)/vote', VoteAnswer),
+	('/(\\d+)/(\\d+)/edit', editAnswer),
+	('/ansimg', AnswerImage),
+	('/(\\d+)/rss',questionRSS),
+	('/addquestion', NewQuestion),
 	('/', Mainpage),
 	('/index', Mainpage),
-	('/addquestion', NewQuestion),
-	('/([0-9]+)', QuestionPage),
-	('/([0-9]+)/post', QuestionSave),
-	('/post', QuestionSave),
-	('/([0-9]+)/([0-9]+)/answerpost', AnswerSave),
-	('/([0-9]+)/answerpost', AnswerSave),
-	('/([0-9]+)/createanswer_image', NewAnswer_image),
-	('/([0-9]+)/vote', VoteQuestion),
-	('/([0-9]+)/([0-9]+)/vote', VoteAnswer),
-	('/([0-9]+)/edit', QuestionEdit),
-	('/([0-9]+)/([0-9]+)/edit', AnswerEdit),
-	('/img', Image),
-	('/ansimg', AnswerImage),
-	#('/rss', RSS),
-	('/([0-9]+)/rss',questionRSS),
-
 ], debug=True)
+
